@@ -1,0 +1,39 @@
+.page {
+  background-color: darkslateblue;
+  cursor: crosshair;
+}
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.fullscreen {
+  height: 100vh;
+  width: 100vw;
+}
+
+.expand {
+  height: 100%;
+  width: 100%;
+}
+
+.hide {
+  display: none;
+}
+
+.floating {
+  position: fixed;
+  z-index: 1;
+}
+
+.square-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

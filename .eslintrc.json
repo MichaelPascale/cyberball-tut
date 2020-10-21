@@ -1,0 +1,39 @@
+// This file configures ESLint, a JavaScript linter for enforcing code quality and style.
+// See: https://eslint.org
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jquery": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 6
+    },
+    "rules": {
+        "indent": [
+            "error",
+            4
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "max-len": [
+            "error",
+            {
+                "code": 80,
+                "ignoreStrings": true
+            }
+        ],
+        "no-unused-vars": "warn"
+    }
+}
