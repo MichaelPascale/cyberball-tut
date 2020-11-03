@@ -5,21 +5,25 @@
 * @license MIT
 */
 
-/*global DEV_MODE, globalBus, Fatal, Recorder, recorder */
+/*global DEV_MODE, globalBus, Fatal, Recorder, recorder, range */
 /*global toMilliseconds, pct2px, pickFromDist, relpx, positionConfederates */
 /*global pickAnother, Participant, Confederate, Ball */
 /*global participant, confederates, ball, allPlayers, currentPlayer */
 
 
-var condition;
 var options;
 var strings;
 var canvas;
 var ctx;
+var tosses;
+var prob;
 
 const parameters = new URLSearchParams(window.location.search);
-if(!(['condition', 'id'].every(x => parameters.has(x))))
+if(!(['condition', 'linkid'].every(x => parameters.has(x))))
     Fatal('Condition and ID not specified.');
+
+const linkid = parameters.get('linkid');
+const condition = parameters.get('condition');
 
 
 /****************************************
@@ -32,12 +36,7 @@ try {
         }).fail(Fatal),
         $.getJSON('strings.json').done(function (r) {
             strings = r;
-        }).fail(Fatal),
-        $.getJSON(`conditions/${parameters.get('condition')}.json`).done(
-            function (r) {
-                condition = r;
-            }
-        ).fail(Fatal)
+        }).fail(Fatal)
     ).then(init);
 
 } catch (err) {
@@ -49,7 +48,8 @@ try {
  * Initialize globals and set HTML text.
  */
 function init() {
-    self.recorder = new Recorder(parameters.get('id'), options['data-server-url']);
+    self.recorder = new Recorder(linkid, options['data-server-url'], condition);
+    prob = options['probabilities'][condition];
 
     $('#pre-task-title')[0].innerText = strings['pre-task-title'];
     for (let p of strings['pre-task-messages'])
@@ -59,7 +59,6 @@ function init() {
     $('#probe-title')[0].innerText = strings['probe-title'];
     $('#probe-text')[0].innerText = strings['probe-text'];
     $('#probe-button-0-text')[0].innerText = strings['probe-button-0-text'];
-    $('#probe-button-1-text')[0].innerText = strings['probe-button-1-text'];
     $('#end-title')[0].innerText = strings['end-title'];
     $('#end-text')[0].innerText = strings['end-text'];
     $('#survey-button-text')[0].innerText = strings['survey-button-text'];
@@ -95,20 +94,6 @@ function start() {
     canvas = $('#canvas')[0];
     ctx = canvas.getContext('2d');
 
-    canvas.addEventListener('mousedown', function (ev) {
-        globalBus.emit('click', ev);
-    });
-
-    globalBus.register('throwto', function (person) {
-        console.log('person', person);
-        console.log('throwto:', person.id);
-        self.currentPlayer = person;
-        recorder.record({
-            type: 'throw',
-            to: person.name
-        });
-    });
-
 
     /****************************************
      * Initialize Players
@@ -118,19 +103,24 @@ function start() {
 
     const maxT = toMilliseconds(options['max-confederate-time']);
     const minT = toMilliseconds(options['min-confederate-time']);
+    const timedist = options['confederate-time-dist'];
 
+
+    // TODO Name confederates randomly or by i +1
     self.confederates = new Array(options['confederates']);
-    for (let i = 0; i < confederates.length; ++i)
-        confederates[i] = new Confederate(`Player ${i + 1}`, function () {
+    for (let i = 0; i < confederates.length; ++i) {
+        confederates[i] = new Confederate(`Player ${i == 0 ? 1 : 3}`, function () {
             setTimeout(
                 $.proxy(function () {
-                    console.log(this);
-                    globalBus.emit('throwto', pickAnother(this, allPlayers, options['probabilities']));
+                    globalBus.emit('throwto', pickAnother(this, allPlayers, prob));
                 }, this),
-                Math.random() * (maxT - minT) + minT
+                pickFromDist(range(0, timedist.length), timedist) * 1000
+                 + Math.random() * 1000
+                //Math.random() * (maxT - minT) + minT
             );
-            this.turn = false;
+
         });
+    }
     allPlayers.push(...confederates);
 
     self.ball = new Ball();
@@ -141,14 +131,18 @@ function start() {
      * */
     self.halted = false;
     self.probe = 0;
+    self.tosses = 0;
+
+    const end = function () {
+        $('#end-dialogue').show();
+        self.halted = true;
+        recorder.send();
+        setTimeout(()=>$('#return-to-survey').prop('disabled', false), 3000);
+    };
 
     // Set end time.
     const setend = function () {
-        setTimeout(() => {
-            $('#end-dialogue').show();
-            self.halted = true;
-            recorder.send();
-        }, toMilliseconds(options['time-limit']));
+        setTimeout(end, toMilliseconds(options['time-limit']));
     };
 
     // Set next MW probe.
@@ -162,20 +156,53 @@ function start() {
         }
     };
 
-    // Record response to MW probe.
-    const onreport = function (res) {
-        $('#probe-dialogue').hide();
-        recorder.record({type: 'probe', report: res});
-        self.halted = false;
-        setTimeout(tick, 16);
-        setprobe();
-    };
+    // Register event listeners.
+    canvas.addEventListener('mousedown', function (ev) {
+        globalBus.emit('click', ev);
+    });
 
-    $('#answer0')[0].addEventListener('mousedown', ()=>onreport(0));
-    $('#answer1')[0].addEventListener('mousedown', ()=>onreport(1));
+    globalBus.register('throwto', function (person) {
+        console.log('thrower:', person.id);
+        console.log('throwto:', person.id);
+
+        recorder.record('throw', {
+            to: person.name
+        });
+
+        // If last throw, end the game.
+        tosses++;
+        if (tosses >= options.tosses) end();
+        else globalBus.emit('turn', person);
+    });
+
+    globalBus.register('turn', (person)=>{
+        self.currentPlayer = person;
+    });
+
+    // Record response to MW probe.
+    $('#probe-form').submit(function(e) {
+        $('#probe-dialogue').hide();
+
+        const formdata = $('#probe-form').serializeArray();
+        const data = {};
+
+        for (let x of formdata) data[x.name] = x.value;
+
+        recorder.record('probe', data);
+        $('#probe-form')[0].reset();
+
+        setTimeout(()=>{
+            self.halted = false;
+            setprobe();
+        }, Math.random * 3000 + 750);
+
+        setTimeout(tick, 16);
+
+        e.preventDefault();
+    });
 
     $('#return-to-survey')[0].addEventListener('mousedown', function () {
-        window.location.href = `${options['survey-url']}?${parameters.toString()}`;
+        window.location.href = `${options['survey-url']}?${parameters.toString()}&completed=true`;
     });
 
 
@@ -186,7 +213,7 @@ function start() {
     setend();
 
     recorder.begin();
-    globalBus.emit('throwto', pickFromDist(allPlayers, options['probabilities']));
+    globalBus.emit('turn', pickFromDist(allPlayers, prob));
 
     tick();
 }
@@ -214,15 +241,19 @@ function tick() {
         confederates, 0.5 * Math.min(canvas.height, canvas.width),
         participant.cx, participant.cy
     );
+    confederates.forEach(c => c.hflip = c.dx + c.dw/2 > canvas.width/2 );
 
-    ball.setPosition(relpx(165 * scale, 48 * scale, currentPlayer));
+    if (currentPlayer.hflip)
+        ball.hflip = true;
+    else ball.hflip = false;
+
+    ball.setPosition(relpx((20 + (ball.hflip ? 150 : 0))* scale, 48 * scale, currentPlayer));
 
 
     /****************************************
      * Emit the render event to redraw the canvas.
      * */
     globalBus.emit('render', ctx);
-    globalBus.emit('turn', currentPlayer);
 
 
     /****************************************

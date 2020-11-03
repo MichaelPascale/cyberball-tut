@@ -35,6 +35,9 @@ function Sprite(spritesheet, spritelist, spritewidth, spriteheight) {
     this.dw = this.width = spritewidth;
     this.dh = this.height = spriteheight;
 
+    this.vflip = false;
+    this.hflip = false;
+
     this.el = document.createElement('img');
     this.el.setAttribute('src', spritesheet);
 
@@ -104,6 +107,12 @@ function Sprite(spritesheet, spritelist, spritewidth, spriteheight) {
     this.render = function(ctx) {
         ctx.save();
         this.update(ctx);
+
+        if (this.hflip) {
+            ctx.translate(2 * this.dx + this.dw, 0);
+            ctx.scale(-1, 1);
+        }
+
         ctx.drawImage(
             this.el, this.sx, this.sy, this.sw, this.sh,
             this.dx, this.dy, this.dw, this.dh
@@ -171,6 +180,9 @@ function Player(name) {
 
 
     globalBus.register('turn', $.proxy(function (player) {
+        if (player.id === this.id)
+            this.turn = true;
+
         if (this.turn) {
             this.onturn();
             this.setSprite('throw1');
@@ -178,14 +190,16 @@ function Player(name) {
     }, this));
 
     globalBus.register('throwto', $.proxy(function (player) {
-        if (player.id === this.id)
-            this.turn = true;
-        else this.turn = false;
+        if (player.id !== this.id)
+            this.turn = false;
+
     }, this));
 
     globalBus.register('render', $.proxy(function () {
         if (!this.turn)
             this.setSprite('idle');
+        else
+            this.setSprite('throw1');
     }, this));
 }
 
@@ -245,13 +259,9 @@ function Participant(name) {
 
         if (this.turn) {
             ctx.fillText('It\'s your turn', this.dx, this.dy + this.dh + 10);
-            const flip = ( self.MOUSE_POS ?
+            this.hflip = ( self.MOUSE_POS ?
                 MOUSE_POS.clientX > document.documentElement.clientWidth / 2 : 1
-            ) ? 1 : -1;
-            if (flip < 1) {
-                ctx.translate(ctx.canvas.width, 0);
-            } // this.dw, 0);
-            ctx.scale(flip, 1);
+            ) ? false : true;
         }
     };
 

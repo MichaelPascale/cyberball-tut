@@ -3,6 +3,10 @@
   cursor: crosshair;
 }
 
+.p {
+  line-height: 1.5;
+}
+
 .centered {
   display: flex;
   flex-direction: column;

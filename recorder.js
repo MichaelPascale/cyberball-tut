@@ -8,12 +8,14 @@
 * @constructor
 * @param {String} id - Unique identifier of the participant.
 * @param {String} url - URL of the server to POST data to.
+* @param {Number} condition - Experimental condition number.
 * @param {String} [begin=false] - Start the recorder upon creation.
 */
-function Recorder(id, url, begin = false) {
+function Recorder(id, url, condition, begin = false) {
     this.id = id;
     this.url = url;
     this.data = [];
+    this.condition = condition;
     this.started = undefined;
     this.finished = undefined;
 
@@ -24,13 +26,16 @@ function Recorder(id, url, begin = false) {
     /**
      * Save a data object to the data array.
      * @method
-     * @param {Object} data
+     * @param {String} type - Name for the type of record.
+     * @param {Object} data - Object containing data to be recorded.
      */
-    this.record = function (data) {
+    this.record = function (type, data) {
         if (this.started && !this.finished)
             this.data.push({
+                condition: this.condition,
                 time: new Date() - this.started,
                 id: this.id,
+                type: type,
                 ...data
             });
         else
@@ -78,7 +83,7 @@ function Recorder(id, url, begin = false) {
                 id: this.id,
                 started: this.started.toISOString(),
                 finished: this.finished.toISOString(),
-                elapsed: this.started - this.finished,
+                elapsed: this.finished - this.started,
                 data: this.data
             }),
             contentType: 'application/json'

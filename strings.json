@@ -1,18 +1,19 @@
 {
-    "pre-task-title": "Cyberball",
+    "pre-task-title": "Mental Visualization",
     "pre-task-messages": [
-        "In the upcoming experiment, we test the effects of practising mental visualisation on task performance. Thus, we need you to practice your mental visualisation skills. We have found that the best way to do this is to have you play an on-line ball tossing game with other participants who are logged on at the same time.",
-        "In a few moments, you will be playing a ball tossing game with other students over our network. The game is very simple.&nbsp; When the ball is tossed to you, simply click on the name of the player you want to throw it to. When the game is over, the experimenter will give you additional instructions.",
-        "What is important is not your ball tossing performance, but that you MENTALLY VISUALISE the entire experience. Imagine what the others look like. What sort of people are they? Where are you playing? Is it warm and sunny or cold and rainy? Create in your mind a complete mental picture of what might be going on if you were playing this game in real life."
+        "In the upcoming experiment, we test the effects of practicing mental visualization on task performance. Thus, we need you to practice your mental visualization skills. We have found that the best way to do this is to have you play an online ball tossing game with other participants who are logged on at the same time.",
+        "In a few moments, you will be playing a ball tossing game with other students over our network. The game is very simple. When the ball is tossed to you, simply click on the player you want to throw it to. The game will pause at several points, during which time you and the other participants will be presented a probe question regarding your thoughts at the moment the game paused. When the game is over, you will receive further instructions followed by a short survey. We will ask that you rate the degree to which your thoughts were off-task just before the presentation of each probe. ",
+        "Off-task thought is defined as... <br /> &emsp; 1) thinking about anything that is going on in your external environment, <br /> &emsp; 2) focusing on internal things, like planning, memories, or imagining future events, or <br /> &emsp; 3) focusing on any sensations in your body. This definition will be presented during each probe for reference.",
+        "For example, just before the probe question, you might be having an off-task thought about what you will be making for dinner this evening.",
+        "What is important is not your ball tossing performance, but that you MENTALLY VISUALIZE the entire experience. Imagine what the others look like. What sort of people are they? Where are you playing? Is it warm and sunny or cold and rainy? Create in your mind a complete mental picture of what might be going on if you were playing this game in real life."
     ],
     "pre-task-button-text": "Begin the Task",
     "connecting-text": "Waiting for additional players to connect...",
     "participant-text": "You",
     "directions-text": "You have the ball. Click on the player you would like to throw it too.",
-    "probe-title": "MW Probe",
-    "probe-text": "Content of the probe would appear here.",
-    "probe-button-0-text": "No",
-    "probe-button-1-text": "Yes",
+    "probe-title": "Thought Probe",
+    "probe-text": "",
+    "probe-button-0-text": "Continue",
     "end-title": "The task has ended.",
     "end-text": "Click the button below to return to Qualtrics and complete several followup questions.",
     "survey-button-text": "Return to Qualtrics"

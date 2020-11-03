@@ -34,50 +34,36 @@ function toMilliseconds(str) {
 
 
 /**
- * Get the position of subject's centroid were it positioned over point (x, y)
- * of relative where x and y are percentage values of relative's width and
- * height.
+ * Get the coordinates of some vertical and horizontal fraction of a canvas.
  * @param {Number} px
  * @param {Number} py
- * @param {Object} relative
+ * @param {HTMLCanvasElement} canvas
+ * @return {Number[]}
  */
-function relpct2px(px, py, relative) {
-    return [px * relative.width + relative.dx,
-        py * relative.height + relative.dy];
-}
-
 function pct2px(px, py, canvas) {
     return [px * canvas.width, py * canvas.height];
 }
 
-function relpx(x, y, relative) {
-    return [relative.dx + x, relative.dy + y];
-}
-
-function relative2(subject, relative) {
-    return [relative.dx - subject.dx, relative.dy - subject.dy];
-}
-
-function getVMin() {
-    return 100 / Math.min(
-        document.documentElement.clientWidth,
-        document.documentElement.clientHeight
-    );
-}
 
 /**
- *
- * @param {Number | Array} px
+ * Get the global coordinates relative to a sprite.
+ * @param {Number} x - X-coordinate relative to sprite.
+ * @param {Number} y - Y-coordinate relative to sprite.
+ * @param {Sprite} sprite
+ * @return {Number[]}
  */
-function pxToVMin(px) {
-    const vmin = getVMin();
-    if (typeof px === 'number') {
-        return px * vmin;
-    } else {
-        return px.map((x) => x * vmin);
-    }
+function relpx(x, y, sprite) {
+    return [sprite.dx + x, sprite.dy + y];
 }
 
+
+/**
+ * Pick an item from a distribution other than that given.
+ * @param {*} item - The value to exclude.
+ * @param {*[]} vals - List of values to choose from.
+ * @param {Number[]} dist - The probability of each value being chosen.
+ * @return {*}
+ */
 function pickAnother(item, vals, dist) {
     let ret;
     do {
@@ -87,6 +73,12 @@ function pickAnother(item, vals, dist) {
 }
 
 
+/**
+ * Pick an item from a distribution.
+ * @param {*[]} vals - List of values to choose from.
+ * @param {Number[]} dist - The probability of each value being chosen.
+ * @return {*}
+ */
 function pickFromDist(vals, dist) {
     const cumulatives = new Array(dist.length);
     const total = dist.reduce((sum, curr, i) => cumulatives[i] = sum + curr, 0);
@@ -94,16 +86,37 @@ function pickFromDist(vals, dist) {
     return vals[cumulatives.findIndex(p => (p >= n))];
 }
 
-function getPersonIndex(arr, person) {
-    return arr.findIndex((el) => el.id == person.id);
+
+function makeDist(vals, prob) {
+    // prob is probability first element is picked.
+    const pOther = (1 - prob) / vals.length;
+    let dist = vals.map((x, i) => i === 0 ? prob : pOther);
+    return dist;
 }
 
-function chooseWhomToThrowTo(person, people, probs) {
-    const i = getPersonIndex(people, person);
-    const p = probs[i];
-    const dist = probs.slice(0,i).concat(probs.slice(i + 1)).map(x => x + p);
-    let a = pickFromDist(people.slice(0, i).concat(people.slice(i + 1)), dist);
-    return a;
+function norm(m, r, x = Math.random()) {
+    const e  = 2.71828;
+    const pi = 3.14159;
+
+    const a = 1 / (r * Math.sqrt(2 * pi));
+    const b = -1 * ((x - m)*(x - m)) / (2 * r * r);
+    const c = Math.pow(e, b);
+    return a * c;
+}
+
+function skewedRandomTime(min, max) {
+    const t = [];
+    for (let i = 0; i <= max - min; i++)
+        t[i] = min + i;
+
+    return pickFromDist(t, t.map((x,i) => norm(0.2, 0.3, i/t.length)));
+}
+
+function range(min, max) {
+    const t = [];
+    for (let i = 0; i <= max - min; i++)
+        t[i] = min + i;
+    return t;
 }
 
 /**
