@@ -119,6 +119,28 @@ function range(min, max) {
     return t;
 }
 
+function noise() {
+    return Math.random() - 0.5;
+}
+
+// Class to generate non repeating "ids" for the confederates.
+function ridgen() {
+    this.existing = new Set();
+
+    this.rig = function () {
+        let n;
+        do {
+            n = ('000' + Math.floor(Math.random() * 390 + 10)).slice(-3);
+        } while (this.existing.has(n));
+        return n;
+    };
+}
+self.rig = new ridgen();
+
+function sum (list) {
+    return list.reduce((sum, curr) => sum + curr, 0);
+}
+
 /**
  * Position the confederates in a half circle.
  * @param {Confederate[]} confederates

@@ -3,22 +3,17 @@
     "confederates": 2,
     "tosses": 140,
     "time-limit": "5min",
-    "min-connecting-time": "5s",
-    "max-connecting-time": "28s",
+    "min-connecting-time": "28.2s",
+    "max-connecting-time": "28.3s",
     "min-confederate-time": "2s",
     "max-confederate-time": "6s",
     "confederate-time-dist": [
-      0.000,
-      0.020,
-      0.600,
-      0.200,
-      0.100,
-      0.040,
-      0.020,
-      0.010,
-      0.005,
-      0.003,
-      0.002
+      0,
+      55,
+      25,
+      10,
+      5,
+      5
     ],
     "probe-intervals": [
       "40s",
@@ -27,11 +22,10 @@
       "50s"
     ],
     "probabilities": {
-      "-1": [0.150, 0.425, 0.425],
       "0": [0.0968, 0.4516, 0.4516],
       "1": [0.330, 0.330, 0.330]
     },
     "survey-url": "https://unh.az1.qualtrics.com/jfe/form/SV_2nkilXry3LjyEdL",
-    "data-server-url": "http://3.92.194.159:3000/save",
+    "data-server-url": "http://localhost:3000/save",
     "framerate": 60
 }

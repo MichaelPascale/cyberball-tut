@@ -49,14 +49,14 @@ function EventBus () {
      * @param {String} event - The name of the event to trigger.
      * @param {*} args - Arguments to be supplied to each handler.
      */
-    this.emit = function (event, args) {
+    this.emit = function (event, ...args) {
         // if (DEV_MODE)
         //     console.log(`Event: ${event}`);
 
         if (this.events.has(event)) {
             const queue = this.events.get(event);
             for (const handler of queue) {
-                handler(args);
+                handler(...args);
             }
         }
     };

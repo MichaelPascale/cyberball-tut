@@ -5,7 +5,7 @@
 * @license MIT
 */
 
-/*global DEV_MODE, globalBus, Fatal, Recorder, recorder, range */
+/*global DEV_MODE, globalBus, Fatal, Recorder, recorder, range, noise */
 /*global toMilliseconds, pct2px, pickFromDist, relpx, positionConfederates */
 /*global pickAnother, Participant, Confederate, Ball */
 /*global participant, confederates, ball, allPlayers, currentPlayer */
@@ -78,11 +78,21 @@ function connecting() {
 
     const maxT = toMilliseconds(options['max-connecting-time']);
     const minT = toMilliseconds(options['min-connecting-time']);
+    const totaltime = DEV_MODE ? 250 : Math.random() * (maxT - minT) + minT;
+
+    setTimeout(()=>{ $('#connecting-text')[0].innerText = 'Waiting for 2 more participants...'; }, 750);
+    setTimeout(()=>{ $('#connecting-text')[0].innerText = 'Waiting for 1 more participants...'; }, 0.72 * totaltime);
+    setTimeout(()=>{ $('#connecting-text')[0].innerText = 'Starting game.'; }, totaltime - 1000);
 
     setTimeout(function () {
         $('#loading-page').hide();
         start();
-    }, DEV_MODE ? 250 : Math.random() * (maxT - minT) + minT);
+    }, totaltime);
+
+    // setTimeout(function () {
+    //     $('#loading-page').hide();
+    //     start();
+//    }, DEV_MODE ? 250 : Math.random() * (maxT - minT) + minT);
 }
 
 
@@ -98,7 +108,7 @@ function start() {
     /****************************************
      * Initialize Players
      * */
-    self.participant = new Participant(strings['participant-text']);
+    self.participant = new Participant();
     self.allPlayers = [participant];
 
     const maxT = toMilliseconds(options['max-confederate-time']);
@@ -109,17 +119,20 @@ function start() {
     // TODO Name confederates randomly or by i +1
     self.confederates = new Array(options['confederates']);
     for (let i = 0; i < confederates.length; ++i) {
-        confederates[i] = new Confederate(`Player ${i == 0 ? 1 : 3}`, function () {
-            setTimeout(
-                $.proxy(function () {
-                    globalBus.emit('throwto', pickAnother(this, allPlayers, prob));
-                }, this),
-                pickFromDist(range(0, timedist.length), timedist) * 1000
-                 + Math.random() * 1000
-                //Math.random() * (maxT - minT) + minT
-            );
+        confederates[i] =
+            new Confederate(`Player ${i == 0 ? 1 : 3}`,
+                function () {
+                    setTimeout(
 
-        });
+                        $.proxy(function () {
+                            globalBus.emit('throwto', this, pickAnother(this, allPlayers, prob));
+                        }, this),
+
+                        // Wait a random number of seconds weighted by timedist.
+                        (pickFromDist(range(0, timedist.length), timedist)
+                            + noise()) * 1000
+                    );
+                });
     }
     allPlayers.push(...confederates);
 
@@ -136,8 +149,7 @@ function start() {
     const end = function () {
         $('#end-dialogue').show();
         self.halted = true;
-        recorder.send();
-        setTimeout(()=>$('#return-to-survey').prop('disabled', false), 3000);
+        recorder.send(()=>$('#return-to-survey').prop('disabled', false));
     };
 
     // Set end time.
@@ -161,18 +173,19 @@ function start() {
         globalBus.emit('click', ev);
     });
 
-    globalBus.register('throwto', function (person) {
-        console.log('thrower:', person.id);
-        console.log('throwto:', person.id);
+    globalBus.register('throwto', function (from, to) {
+        console.log('thrower:', to.id);
+        console.log('throwto:', to.id);
 
         recorder.record('throw', {
-            to: person.name
+            from: from instanceof Participant ? 'participant' : from.name,
+            to: to instanceof Participant ? 'participant' : to.name,
         });
 
         // If last throw, end the game.
         tosses++;
         if (tosses >= options.tosses) end();
-        else globalBus.emit('turn', person);
+        else globalBus.emit('turn', to);
     });
 
     globalBus.register('turn', (person)=>{
@@ -247,7 +260,9 @@ function tick() {
         ball.hflip = true;
     else ball.hflip = false;
 
-    ball.setPosition(relpx((20 + (ball.hflip ? 150 : 0))* scale, 48 * scale, currentPlayer));
+    ball.setPosition(
+        relpx((20 + (ball.hflip ? 150 : 0)) * scale, 48 * scale, currentPlayer)
+    );
 
 
     /****************************************

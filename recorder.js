@@ -71,7 +71,7 @@ function Recorder(id, url, condition, begin = false) {
      * Send data to the server.
      * @method
      */
-    this.send = function () {
+    this.send = function (callback) {
 
         if (!this.finished)
             this.end();
@@ -79,14 +79,37 @@ function Recorder(id, url, condition, begin = false) {
         $.ajax({
             type: 'post',
             url: this.url,
-            data: JSON.stringify({
-                id: this.id,
-                started: this.started.toISOString(),
-                finished: this.finished.toISOString(),
-                elapsed: this.finished - this.started,
-                data: this.data
-            }),
-            contentType: 'application/json'
+            data: JSON.stringify([
+                {
+                    type: 'metadata',
+                    id: this.id,
+                    time: 0,
+                    condition: this.condition,
+                    metadata: JSON.stringify({
+                        started: this.started.toISOString(),
+                        finished: this.finished.toISOString(),
+                        elapsed: this.finished - this.started,
+                        ...this.data.reduce((acc, cur)=>{
+                            if (cur.type === 'probe') {
+                                acc.probes++;
+                                acc.q1.push(cur.q1);
+                            } else if (cur.type === 'throw') {
+                                acc.throws++;
+                                if (cur.from === 'participant')
+                                    acc.byPart++;
+                            }
+
+                            acc.pct = acc.byPart / acc.throws;
+
+                            return acc;
+                        }, { throws: 0, byPart: 0, probes: 0, pct: 0, q1: []})
+                    })
+                },
+
+                ...this.data
+            ]),
+            contentType: 'application/json',
+            complete: callback
         });
     }
 }

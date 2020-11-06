@@ -148,7 +148,6 @@ function Sprite(spritesheet, spritelist, spritewidth, spriteheight) {
     globalBus.register('click', $.proxy(function (ev) {
         if (this.inBounds(ev.offsetX, ev.offsetY)) {
             this.onclick();
-            console.log('Clicked', this);
             globalBus.emit('clicked', this);
         }
     }, this));
@@ -189,8 +188,8 @@ function Player(name) {
         }
     }, this));
 
-    globalBus.register('throwto', $.proxy(function (player) {
-        if (player.id !== this.id)
+    globalBus.register('throwto', $.proxy(function (from, to) {
+        if (to.id !== this.id)
             this.turn = false;
 
     }, this));
@@ -214,7 +213,7 @@ Player.prototype = Object.create(Sprite.prototype);
 * @param {Function} onturn - A handler for the turn event.
 */
 function Confederate(name, onturn) {
-    Player.call(this, name);
+    Player.call(this, `${self.rig.rig()}   (${name})`);
 
     this.onturn = onturn;
 
@@ -228,7 +227,9 @@ function Confederate(name, onturn) {
     this.update = function (ctx) {
         ctx.font = '1em BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif';
         ctx.fillStyle = 'White';
-        ctx.fillText(this.name, this.dx, this.dy);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(this.name, this.cx, this.dy + this.dh + 10);
     };
 }
 
@@ -241,8 +242,8 @@ Confederate.prototype = Object.create(Player.prototype);
 * @extends Player
 * @param {String} name - The name of the participant.
 */
-function Participant(name) {
-    Player.call(this, name);
+function Participant() {
+    Player.call(this, `${self.rig.rig()}  (You)`);
 
 
     /**
@@ -255,10 +256,12 @@ function Participant(name) {
     this.update = function (ctx) {
         ctx.font = '1em BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif';
         ctx.fillStyle = 'White';
-        ctx.fillText(this.name, this.dx, this.dy);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(this.name, this.cx, this.dy + this.dh + 10);
 
         if (this.turn) {
-            ctx.fillText('It\'s your turn', this.dx, this.dy + this.dh + 10);
+            ctx.fillText('It\'s your turn!', this.cx, this.dy + this.dh + 30);
             this.hflip = ( self.MOUSE_POS ?
                 MOUSE_POS.clientX > document.documentElement.clientWidth / 2 : 1
             ) ? false : true;
@@ -275,7 +278,7 @@ function Participant(name) {
     globalBus.register('clicked', $.proxy(function (sprite) {
         //console.log(sprite instanceof Player)
         if (this.turn && sprite instanceof Player && sprite.id !== this.id)
-            globalBus.emit('throwto', sprite);
+            globalBus.emit('throwto', this, sprite);
     }, this));
 }
 

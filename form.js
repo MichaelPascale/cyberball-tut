@@ -13,11 +13,11 @@
 */
 
 function likert (n, low, high, node) {
-    for (let i = 0; i < n; ++i)
+    for (let i = 1; i <= n; ++i)
         $(
             `<label class="radio">
              <input type="radio" name="${node}" value=${i} required>
-             (${i+1}) ${i == 0 ? low : i == n - 1 ? high : ''}
+             (${i}) ${i == 1 ? low : i == n ? high : ''}
              </label><br />`
         ).appendTo(`#${node}`);
 }
