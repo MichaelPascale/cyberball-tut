@@ -130,7 +130,7 @@ function start() {
 
                         // Wait a random number of seconds weighted by timedist.
                         (pickFromDist(range(0, timedist.length), timedist)
-                            + noise()) * 1000
+                            + noise() + 0.15) * 1000
                     );
                 });
     }
@@ -184,8 +184,9 @@ function start() {
 
         // If last throw, end the game.
         tosses++;
-        if (tosses >= options.tosses) end();
-        else globalBus.emit('turn', to);
+        //if (tosses >= options.tosses) end();
+        //else
+        globalBus.emit('turn', to);
     });
 
     globalBus.register('turn', (person)=>{

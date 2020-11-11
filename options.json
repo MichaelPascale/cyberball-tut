@@ -16,16 +16,16 @@
       5
     ],
     "probe-intervals": [
-      "40s",
-      "80s",
-      "70s",
-      "50s"
+      "45s",
+      "60s",
+      "60s",
+      "60s"
     ],
     "probabilities": {
       "0": [0.0968, 0.4516, 0.4516],
-      "1": [0.330, 0.330, 0.330]
+      "1": [0.33, 0.33, 0.33]
     },
     "survey-url": "https://unh.az1.qualtrics.com/jfe/form/SV_2nkilXry3LjyEdL",
-    "data-server-url": "http://localhost:3000/save",
+    "data-server-url": "http://3.92.194.159:3000/save",
     "framerate": 60
 }
