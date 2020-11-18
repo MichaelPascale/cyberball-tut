@@ -104,6 +104,19 @@ function start() {
     canvas = $('#canvas')[0];
     ctx = canvas.getContext('2d');
 
+    $('#instructions').show();
+
+    $('#playerbuttons').show();
+    $('#playerbuttons').css("display", "flex");
+
+    $('#p1bt')[0].addEventListener('mousedown', function () {
+        recorder.record('playerbt', {bt: 'p1'});
+    });
+
+    $('#p3bt')[0].addEventListener('mousedown', function () {
+        recorder.record('playerbt', {bt: 'p3'});
+    });
+
 
     /****************************************
      * Initialize Players
@@ -115,6 +128,43 @@ function start() {
     const minT = toMilliseconds(options['min-confederate-time']);
     const timedist = options['confederate-time-dist'];
 
+    function Counter (n, p, prob, sched, player, allPlayers) {
+        this.n = n;
+        this.p = p;
+        this.np = n * p;
+        this.nc = n - this.np;
+
+        this.i = 0;
+
+        this.prob = prob;
+        this.sched = sched;
+        this.player = player;
+        this.allPlayers = allPlayers;
+
+        this.throw = function (from) {
+            if (this.i > this.sched.length) return pickAnother(from, this.allPlayers, this.prob);
+
+            let ret;
+            // Player
+            if (this.sched[this.i] === 'P')
+                ret = this.player;
+
+            // Confederate
+            else
+                ret = this.allPlayers.slice(1).reduce((acc, x) => {
+                    if (x.id !== from.id)
+                        return x;
+                    return acc;
+                });
+
+            this.i += 1;
+            return ret
+        }
+    }
+
+    console.log(options['sched'][condition])
+    const counter = new Counter(140, options['p'][condition], prob, options['sched'][condition], self.participant, self.allPlayers);
+
 
     // TODO Name confederates randomly or by i +1
     self.confederates = new Array(options['confederates']);
@@ -125,12 +175,12 @@ function start() {
                     setTimeout(
 
                         $.proxy(function () {
-                            globalBus.emit('throwto', this, pickAnother(this, allPlayers, prob));
+                            globalBus.emit('throwto', this, counter.throw(this));
                         }, this),
 
                         // Wait a random number of seconds weighted by timedist.
                         (pickFromDist(range(0, timedist.length), timedist)
-                            + noise() + 0.15) * 1000
+                            + noise() + 0.35) * 1000
                     );
                 });
     }

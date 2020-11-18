@@ -260,12 +260,12 @@ function Participant() {
         ctx.textBaseline = 'top';
         ctx.fillText(this.name, this.cx, this.dy + this.dh + 10);
 
-        if (this.turn) {
-            ctx.fillText('It\'s your turn!', this.cx, this.dy + this.dh + 30);
-            this.hflip = ( self.MOUSE_POS ?
-                MOUSE_POS.clientX > document.documentElement.clientWidth / 2 : 1
-            ) ? false : true;
-        }
+        // if (this.turn) {
+        //     ctx.fillText('It\'s your turn! Click the player you wish to throw to.', this.cx, this.dy + this.dh + 30);
+        //     this.hflip = ( self.MOUSE_POS ?
+        //         MOUSE_POS.clientX > document.documentElement.clientWidth / 2 : 1
+        //     ) ? false : true;
+        // }
     };
 
 
