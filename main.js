@@ -19,7 +19,7 @@ var tosses;
 var prob;
 
 const parameters = new URLSearchParams(window.location.search);
-if(!(['condition', 'linkid'].every(x => parameters.has(x))))
+if (!(['condition', 'linkid'].every(x => parameters.has(x))))
     Fatal('Condition and ID not specified.');
 
 const linkid = parameters.get('linkid');
@@ -80,9 +80,9 @@ function connecting() {
     const minT = toMilliseconds(options['min-connecting-time']);
     const totaltime = DEV_MODE ? 250 : Math.random() * (maxT - minT) + minT;
 
-    setTimeout(()=>{ $('#connecting-text')[0].innerText = 'Waiting for 2 more participants...'; }, 750);
-    setTimeout(()=>{ $('#connecting-text')[0].innerText = 'Waiting for 1 more participants...'; }, 0.72 * totaltime);
-    setTimeout(()=>{ $('#connecting-text')[0].innerText = 'Starting game.'; }, totaltime - 1000);
+    setTimeout(() => { $('#connecting-text')[0].innerText = 'Waiting for 2 more participants...'; }, 750);
+    setTimeout(() => { $('#connecting-text')[0].innerText = 'Waiting for 1 more participants...'; }, 0.72 * totaltime);
+    setTimeout(() => { $('#connecting-text')[0].innerText = 'Starting game.'; }, totaltime - 1000);
 
     setTimeout(function () {
         $('#loading-page').hide();
@@ -92,7 +92,7 @@ function connecting() {
     // setTimeout(function () {
     //     $('#loading-page').hide();
     //     start();
-//    }, DEV_MODE ? 250 : Math.random() * (maxT - minT) + minT);
+    //    }, DEV_MODE ? 250 : Math.random() * (maxT - minT) + minT);
 }
 
 
@@ -107,14 +107,14 @@ function start() {
     $('#instructions').show();
 
     $('#playerbuttons').show();
-    $('#playerbuttons').css("display", "flex");
+    $('#playerbuttons').css('display', 'flex');
 
     $('#p1bt')[0].addEventListener('mousedown', function () {
-        recorder.record('playerbt', {bt: 'p1'});
+        recorder.record('playerbt', { bt: 'p1' });
     });
 
     $('#p3bt')[0].addEventListener('mousedown', function () {
-        recorder.record('playerbt', {bt: 'p3'});
+        recorder.record('playerbt', { bt: 'p3' });
     });
 
 
@@ -128,7 +128,7 @@ function start() {
     const minT = toMilliseconds(options['min-confederate-time']);
     const timedist = options['confederate-time-dist'];
 
-    function Counter (n, p, prob, sched, player, allPlayers) {
+    function Counter(n, p, prob, sched, player, allPlayers) {
         this.n = n;
         this.p = p;
         this.np = n * p;
@@ -142,7 +142,8 @@ function start() {
         this.allPlayers = allPlayers;
 
         this.throw = function (from) {
-            if (this.i > this.sched.length) return pickAnother(from, this.allPlayers, this.prob);
+            if (this.i > this.sched.length)
+                return pickAnother(from, this.allPlayers, this.prob);
 
             let ret;
             // Player
@@ -158,11 +159,11 @@ function start() {
                 });
 
             this.i += 1;
-            return ret
-        }
+            return ret;
+        };
     }
 
-    console.log(options['sched'][condition])
+    console.log(options['sched'][condition]);
     const counter = new Counter(140, options['p'][condition], prob, options['sched'][condition], self.participant, self.allPlayers);
 
 
@@ -180,7 +181,7 @@ function start() {
 
                         // Wait a random number of seconds weighted by timedist.
                         (pickFromDist(range(0, timedist.length), timedist)
-                            + noise() + 0.35) * 1000
+                            + noise() + 0.6) * 1000
                     );
                 });
     }
@@ -199,7 +200,7 @@ function start() {
     const end = function () {
         $('#end-dialogue').show();
         self.halted = true;
-        recorder.send(()=>$('#return-to-survey').prop('disabled', false));
+        recorder.send(() => $('#return-to-survey').prop('disabled', false));
     };
 
     // Set end time.
@@ -216,6 +217,15 @@ function start() {
                 self.probe++;
             }, toMilliseconds(options['probe-intervals'][self.probe]));
         }
+
+        // If all probes done, repeatedly check whether all throws are done.
+        else setTimeout(function checkdone() {
+            console.log('checkdone');
+            if (self.tosses >= options['tosses']) {
+                end();
+            }
+            else setTimeout(checkdone, 1000);
+        }, 1000);
     };
 
     // Register event listeners.
@@ -239,12 +249,12 @@ function start() {
         globalBus.emit('turn', to);
     });
 
-    globalBus.register('turn', (person)=>{
+    globalBus.register('turn', (person) => {
         self.currentPlayer = person;
     });
 
     // Record response to MW probe.
-    $('#probe-form').submit(function(e) {
+    $('#probe-form').submit(function (e) {
         $('#probe-dialogue').hide();
 
         const formdata = $('#probe-form').serializeArray();
@@ -255,7 +265,7 @@ function start() {
         recorder.record('probe', data);
         $('#probe-form')[0].reset();
 
-        setTimeout(()=>{
+        setTimeout(() => {
             self.halted = false;
             setprobe();
         }, Math.random * 3000 + 750);
@@ -277,8 +287,8 @@ function start() {
     setend();
 
     recorder.begin();
-    globalBus.emit('turn', pickFromDist(allPlayers, prob));
 
+    globalBus.emit('turn', self.confederates[0]);
     tick();
 }
 
@@ -305,7 +315,7 @@ function tick() {
         confederates, 0.5 * Math.min(canvas.height, canvas.width),
         participant.cx, participant.cy
     );
-    confederates.forEach(c => c.hflip = c.dx + c.dw/2 > canvas.width/2 );
+    confederates.forEach(c => c.hflip = c.dx + c.dw / 2 > canvas.width / 2);
 
     if (currentPlayer.hflip)
         ball.hflip = true;
@@ -326,5 +336,5 @@ function tick() {
      * Prepare next tick. Stop if halted.
      * */
     if (!self.halted)
-        setTimeout(tick, 1000/options['framerate']);
+        setTimeout(tick, 1000 / options['framerate']);
 }
