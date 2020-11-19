@@ -52,8 +52,8 @@ function init() {
     prob = options['probabilities'][condition];
 
     $('#pre-task-title')[0].innerText = strings['pre-task-title'];
-    for (let p of strings['pre-task-messages'])
-        $(`<p>${p}</p>`).appendTo('#pre-task-text');
+    // for (let p of strings['pre-task-messages'])
+    //     $(`<p>${p}</p>`).appendTo('#pre-task-text');
     $('#pre-task-button-text')[0].innerText = strings['pre-task-button-text'];
     $('#connecting-text')[0].innerText = strings['connecting-text'];
     $('#probe-title')[0].innerText = strings['probe-title'];

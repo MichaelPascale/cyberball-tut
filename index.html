@@ -22,24 +22,84 @@
 <body>
     <div id="view" class="page fullscreen columns is-centered is-vcentered">
         <div id="playerbuttons" class="box hide" style="position: fixed; top: 10px; width: 60vw;">
-            <span class="mt-1 has-text-centered" style="position: absolute; top:0; width: 100%; left: 0;">On each of the other players' turns, click who last threw the ball.</span>
+            <span class="mt-1 has-text-centered" style="position: absolute; top:0; width: 100%; left: 0;">On each of the
+                other players' turns, click who last threw the ball.</span>
             <button id="p1bt" class="button mt-3 is-fullwidth">Player 1</button>&emsp;
             <button id="p3bt" class="button mt-3 is-fullwidth">Player 3</button>
         </div>
 
 
-        <div id="instructions" class="box has-text-centered hide" style="position: fixed; bottom: 0; width: 60vw;">On your turn, click on the player you wish to throw to.</div>
+        <div id="instructions" class="box has-text-centered hide" style="position: fixed; bottom: 0; width: 60vw;">On
+            your turn, click on the player you wish to throw to.</div>
 
         <canvas id="canvas" class="hide"></canvas>
 
         <div id="pre-task-page" class="container box">
             <div class="content">
                 <h1 id="pre-task-title"></h1>
-                <div id="pre-task-text"></div>
-                <br />
-                <button id="pre-task-button" class="button is-fullwidth">
-                    <p id="pre-task-button-text"></p>
-                </button>
+                <div class="has-text-centered"><b>Important
+                        Instructions:</b></div>
+                <script>
+                    setTimeout(function (){
+                        $('#continue1').prop('disabled', false);
+                        $('#continue1').addClass('is-primary');
+                    }, 8000);
+                    function page2() {
+                        $('#instrp1').hide();
+                        $('#instrp2').show();
+                        setTimeout(function (){
+                        $('#pre-task-button').prop('disabled', false);
+                        $('#pre-task-button').addClass('is-primary');
+                    }, 8000);
+                    }
+                </script>
+                <div id="instrp1" class="mt-2">
+                    <p>In the upcoming experiment, we
+                        test the effects of practicing mental visualization on task performance. Thus,
+                        we need you to practice your <b>mental visualization skills</b>. We have found
+                        that the best way to do this is to have you play an online ball tossing game
+                        with other participants who are logged on at the same time.</p>
+                    <p> In a few
+                        moments, you will be playing a ball tossing game with other students over our
+                        network. The game is very simple. <b>When the ball is tossed to you, simply
+                            click on the player you want to throw it to.</b> The game will pause at several
+                        points, during which time you and the other participants will be presented a
+                        probe question regarding your thoughts at the moment the game paused. When the
+                        game is over, you will receive further instructions followed by a short
+                        survey.</p>
+                    <p><b>We will ask that you rate the degree to which your thoughts
+                            were off-task just before the presentation of each probe.</b> </p>
+                    <p><u>Off-task thought</u> is defined as... <br /> &emsp; 1) thinking about
+                        anything that is going on in your external environment, <br /> &emsp; 2)
+                        focusing on internal things, like planning, memories, or imagining future
+                        events, or <br /> &emsp; 3) focusing on any sensations in your body.</p>
+                    <p>This definition will be presented during each probe for reference. For
+                        example, just before the probe question, you might be having an off-task
+                        thought about what you will be making for dinner this evening. </p> <br />
+                    <button id="continue1" class="button is-fullwidth" onclick="page2()" disabled>
+                        <p> Next Page </p>
+                    </button>
+                </div>
+                <div id="instrp2" class="hide mt-2">
+                    <p>What is important is not your ball tossing
+                        performance, but that you <b>MENTALLY VISUALIZE</b> the entire experience.
+                        Imagine what the others look like. What sort of people are they? Where are you
+                        playing? Is it warm and sunny or cold and rainy? Create in your mind a complete
+                        mental picture of what might be going on if you were playing this game in real
+                        life.</p>
+                    <p>To measure your visualization ability, a row of buttons will
+                        appear at the bottom of the screen, each corresponding to one of the other
+                        players.</p>
+                    <p>&emsp; - <b>Whenever it is <u>not</u> your turn</b>, click the
+                        button with the name of the player who last threw the ball.</p>
+                    <div class="has-text-centered"><img src="assets/buttons_example.png" width="60%"></div>
+                    <p>&emsp; - <b>On <u>your</u>
+                            turn</b>, you may click on the actual image of the player you wish to throw to. </p>
+                    <div class="has-text-centered"><img src="assets/players_example.png" width="60%"></div>
+                    <br /> <button id="pre-task-button" class="button is-fullwidth" disabled>
+                        <p id="pre-task-button-text"></p>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -62,17 +122,20 @@
                             <p id="probe-text"></p>
                             <form id="probe-form">
                                 <p><b>
-                                    Just before the probe, please rate the degree to which your thoughts were off-task (completely on-task to
-                                    completely off-task).
-                                </b></p>
+                                        Just before the probe, please rate the degree to which your thoughts were
+                                        off-task (completely on-task to
+                                        completely off-task).
+                                    </b></p>
 
                                 <p>
                                     Your thoughts are off-task when:
-                                    <ul>
-                                        <li>You are thinking about anything that is going on in your external environment,</li>
-                                        <li>You are focusing on internal things, like planning, memories, or imagining future events, or</li>
-                                        <li>You are focusing on any sensations in your body.</li>
-                                    </ul>
+                                <ul>
+                                    <li>You are thinking about anything that is going on in your external environment,
+                                    </li>
+                                    <li>You are focusing on internal things, like planning, memories, or imagining
+                                        future events, or</li>
+                                    <li>You are focusing on any sensations in your body.</li>
+                                </ul>
                                 </p>
 
                                 <div id="q1" class="control box"></div>
