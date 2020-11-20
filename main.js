@@ -67,6 +67,11 @@ function init() {
         $('#pre-task-page').hide();
         connecting();
     });
+
+    if (DEV_MODE) {
+        $('#pre-task-page').hide();
+        connecting();
+    }
 }
 
 
@@ -163,7 +168,6 @@ function start() {
         };
     }
 
-    console.log(options['sched'][condition]);
     const counter = new Counter(140, options['p'][condition], prob, options['sched'][condition], self.participant, self.allPlayers);
 
 
