@@ -218,6 +218,7 @@ function start() {
                 $('#probe-dialogue').show();
                 self.halted = true;
                 self.mode = 'probe';
+                recorder.record('openprobe', { });
                 self.probe++;
             }, toMilliseconds(options['probe-intervals'][self.probe]));
         }
@@ -264,16 +265,18 @@ function start() {
             case 'J':
             case 'j':
                 globalBus.emit('clicked', self.confederates[0]);
+                recorder.record('key', { bt: 'j' });
                 break;
 
             case 'K':
             case 'k':
                 globalBus.emit('clicked', self.confederates[1]);
+                recorder.record('key', { bt: 'k' });
                 break;
 
             case ' ':
             case 'Spacebar':
-                recorder.record('playerbt', { bt: 'pressed' });
+                recorder.record('key', { bt: 'space' });
                 break;
 
             default:
@@ -284,7 +287,9 @@ function start() {
             case '1':
             case '2':
             case '3':
+                recorder.record('key', { bt: e.key });
                 recorder.record('probe', { q1: e.key });
+                recorder.record('closeprobe', { });
                 $('#probe-dialogue').hide();
                 self.mode = 'game';
                 self.halted = false;
