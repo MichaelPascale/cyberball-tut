@@ -57,8 +57,8 @@ function init() {
     $('#pre-task-button-text')[0].innerText = strings['pre-task-button-text'];
     $('#connecting-text')[0].innerText = strings['connecting-text'];
     $('#probe-title')[0].innerText = strings['probe-title'];
-    $('#probe-text')[0].innerText = strings['probe-text'];
-    $('#probe-button-0-text')[0].innerText = strings['probe-button-0-text'];
+    // $('#probe-text')[0].innerText = strings['probe-text'];
+    // $('#probe-button-0-text')[0].innerText = strings['probe-button-0-text'];
     $('#end-title')[0].innerText = strings['end-title'];
     $('#end-text')[0].innerText = strings['end-text'];
     $('#survey-button-text')[0].innerText = strings['survey-button-text'];
@@ -111,16 +111,13 @@ function start() {
 
     $('#instructions').show();
 
-    $('#playerbuttons').show();
-    $('#playerbuttons').css('display', 'flex');
+    // $('#p1bt')[0].addEventListener('mousedown', function () {
+    //     recorder.record('playerbt', { bt: 'p1' });
+    // });
 
-    $('#p1bt')[0].addEventListener('mousedown', function () {
-        recorder.record('playerbt', { bt: 'p1' });
-    });
-
-    $('#p3bt')[0].addEventListener('mousedown', function () {
-        recorder.record('playerbt', { bt: 'p3' });
-    });
+    // $('#p3bt')[0].addEventListener('mousedown', function () {
+    //     recorder.record('playerbt', { bt: 'p3' });
+    // });
 
 
     /****************************************
@@ -198,12 +195,14 @@ function start() {
      * Setup UI Handlers
      * */
     self.halted = false;
+    self.mode = 'game';
     self.probe = 0;
     self.tosses = 0;
 
     const end = function () {
         $('#end-dialogue').show();
         self.halted = true;
+        self.mode = false;
         recorder.send(() => $('#return-to-survey').prop('disabled', false));
     };
 
@@ -218,6 +217,7 @@ function start() {
             setTimeout(() => {
                 $('#probe-dialogue').show();
                 self.halted = true;
+                self.mode = 'probe';
                 self.probe++;
             }, toMilliseconds(options['probe-intervals'][self.probe]));
         }
@@ -258,26 +258,51 @@ function start() {
     });
 
     // Record response to MW probe.
-    $('#probe-form').submit(function (e) {
-        $('#probe-dialogue').hide();
+    function keypress (e) {
+        if (self.mode === 'game') {
+            switch (e.key) {
+            case 'J':
+            case 'j':
+                globalBus.emit('clicked', self.confederates[0]);
+                break;
 
-        const formdata = $('#probe-form').serializeArray();
-        const data = {};
+            case 'K':
+            case 'k':
+                globalBus.emit('clicked', self.confederates[1]);
+                break;
 
-        for (let x of formdata) data[x.name] = x.value;
+            case ' ':
+            case 'Spacebar':
+                recorder.record('playerbt', { bt: 'pressed' });
+                break;
 
-        recorder.record('probe', data);
-        $('#probe-form')[0].reset();
+            default:
+            }
 
-        setTimeout(() => {
-            self.halted = false;
-            setprobe();
-        }, Math.random * 3000 + 750);
+        } else if (self.mode === 'probe') {
+            switch (e.key) {
+            case '1':
+            case '2':
+            case '3':
+                recorder.record('probe', { q1: e.key });
+                $('#probe-dialogue').hide();
+                self.mode = 'game';
+                self.halted = false;
+                setprobe();
 
-        setTimeout(tick, 16);
+                setTimeout(tick, 16);
+                break;
+
+            default:
+            }
+        }
 
         e.preventDefault();
-    });
+    }
+
+    document.addEventListener('keydown', keypress);
+
+
 
     $('#return-to-survey')[0].addEventListener('mousedown', function () {
         window.location.href = `${options['survey-url']}?${parameters.toString()}&completed=true`;
@@ -314,7 +339,7 @@ function tick() {
     allPlayers.forEach(c => c.scale(scale));
     ball.scale(0.04 * Math.min(canvas.height, canvas.width) / ball.sh);
 
-    participant.setPosition(pct2px(.5, .75, canvas));
+    participant.setPosition(pct2px(.5, .6, canvas));
     positionConfederates(
         confederates, 0.5 * Math.min(canvas.height, canvas.width),
         participant.cx, participant.cy

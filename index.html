@@ -21,82 +21,77 @@
 
 <body>
     <div id="view" class="page fullscreen columns is-centered is-vcentered">
-        <div id="playerbuttons" class="box hide" style="position: fixed; top: 10px; width: 60vw;">
-            <span class="mt-1 has-text-centered" style="position: absolute; top:0; width: 100%; left: 0;">On each of the
-                other players' turns, click who last threw the ball.</span>
-            <button id="p1bt" class="button mt-3 is-fullwidth">Player 1</button>&emsp;
-            <button id="p3bt" class="button mt-3 is-fullwidth">Player 3</button>
+
+        <div id="instructions" class="box has-text-centered hide" style="position: fixed; bottom: 0; width: 60vw;">
+            <p>Each time another player throws the ball, press the <u>spacebar</u>.</p>
+            <p>On your turn, press <u>J</u> to throw to the <i>left</i>, or press <u>K</u> to throw to the <i>right</i>.</p>
         </div>
-
-
-        <div id="instructions" class="box has-text-centered hide" style="position: fixed; bottom: 0; width: 60vw;">On
-            your turn, click on the player you wish to throw to.</div>
 
         <canvas id="canvas" class="hide"></canvas>
 
         <div id="pre-task-page" class="container box">
             <div class="content">
                 <h1 id="pre-task-title"></h1>
-                <div class="has-text-centered"><b>Important
+                <div class="has-text-centered mb-5"><b>Important
                         Instructions:</b></div>
                 <script>
-                    setTimeout(function (){
+                    setTimeout(function () {
                         $('#continue1').prop('disabled', false);
                         $('#continue1').addClass('is-primary');
                     }, 8000);
+
                     function page2() {
                         $('#instrp1').hide();
                         $('#instrp2').show();
-                        setTimeout(function (){
-                        $('#pre-task-button').prop('disabled', false);
-                        $('#pre-task-button').addClass('is-primary');
-                    }, 8000);
+                        setTimeout(function () {
+                            $('#continue2').prop('disabled', false);
+                            $('#continue2').addClass('is-primary');
+                        }, 8000);
                     }
+
+                    function page3() {
+                        $('#instrp2').hide();
+                        $('#instrp3').show();
+                        setTimeout(function () {
+                            $('#pre-task-button').prop('disabled', false);
+                            $('#pre-task-button').addClass('is-primary');
+                        }, 8000);
+                    }
+
                 </script>
                 <div id="instrp1" class="mt-2">
-                    <p>In the upcoming experiment, we
-                        test the effects of practicing mental visualization on task performance. Thus,
-                        we need you to practice your <b>mental visualization skills</b>. We have found
-                        that the best way to do this is to have you play an online ball tossing game
-                        with other participants who are logged on at the same time.</p>
-                    <p> In a few
-                        moments, you will be playing a ball tossing game with other students over our
-                        network. The game is very simple. <b>When the ball is tossed to you, simply
-                            click on the player you want to throw it to.</b> The game will pause at several
-                        points, during which time you and the other participants will be presented a
-                        probe question regarding your thoughts at the moment the game paused. When the
-                        game is over, you will receive further instructions followed by a short
-                        survey.</p>
-                    <p><b>We will ask that you rate the degree to which your thoughts
-                            were off-task just before the presentation of each probe.</b> </p>
-                    <p><u>Off-task thought</u> is defined as... <br /> &emsp; 1) thinking about
-                        anything that is going on in your external environment, <br /> &emsp; 2)
-                        focusing on internal things, like planning, memories, or imagining future
-                        events, or <br /> &emsp; 3) focusing on any sensations in your body.</p>
-                    <p>This definition will be presented during each probe for reference. For
-                        example, just before the probe question, you might be having an off-task
-                        thought about what you will be making for dinner this evening. </p> <br />
-                    <button id="continue1" class="button is-fullwidth" onclick="page2()" disabled>
+                    <p>In the upcoming experiment, we are investigating the effects of practicing <b>mental visualization</b> in game play. Thus, we need you to practice your mental visualization skills. We have found that the best way to do this is to have you play an online ball tossing game with other participants who are logged on at the same time.</p>
+                    <p>In a few moments, you will be playing a ball tossing game with other students over our secure network. The game is very simple. <b>When the ball is tossed to you, indicate who you would like to throw the ball to using the keyboard by clicking either <u>'J'</u> (for the player to your left) or <u>'K'</u> (for the player to your right)</b>.</p>
+                    <p>When it is NOT your turn to throw, you will continue mental visualization by simply <b>pressing the <u>SPACE BAR</u> to indicate that a throw has been made</b>.</p>
+                    <p>These will all be labeled for you during the game.</p>
+                    <button id="continue1" class="button is-fullwidth" disabled onclick="page2()">
                         <p> Next Page </p>
                     </button>
                 </div>
                 <div id="instrp2" class="hide mt-2">
-                    <p>What is important is not your ball tossing
-                        performance, but that you <b>MENTALLY VISUALIZE</b> the entire experience.
-                        Imagine what the others look like. What sort of people are they? Where are you
-                        playing? Is it warm and sunny or cold and rainy? Create in your mind a complete
-                        mental picture of what might be going on if you were playing this game in real
-                        life.</p>
-                    <p>To measure your visualization ability, a row of buttons will
-                        appear at the bottom of the screen, each corresponding to one of the other
-                        players.</p>
-                    <p>&emsp; - <b>Whenever it is <u>not</u> your turn</b>, click the
-                        button with the name of the player who last threw the ball.</p>
-                    <div class="has-text-centered"><img src="assets/buttons_example.png" width="60%"></div>
-                    <p>&emsp; - <b>On <u>your</u>
-                            turn</b>, you may click on the actual image of the player you wish to throw to. </p>
-                    <div class="has-text-centered"><img src="assets/players_example.png" width="60%"></div>
-                    <br /> <button id="pre-task-button" class="button is-fullwidth" disabled>
+                    <p>The game will also pause at several points to help us understand how mental visualization impacts thoughts. At this time, you and the other participants will be presented a probe question regarding your thoughts at the moment the game paused. Please answer these questions honestly. <b>They will not affect your scores or progress in any way</b>.</p>
+                    <p>** Please read these instructions very carefully! **</p>
+                    <p>We will ask that you report your thoughts as they were <b>immediately before the presentation of the thought probe</b>.</p>
+                    <p>You will see the following question appear:</p>
+                    <hr>
+                    <p>What were you thinking about immediately before this screen? Indicate your answer using the keyboard (1, 2, or 3).</p>
+                    <p>1) Thinking about the <b>mental visualization task</b> (thinking about throwing and/or following the ball).<br>
+                        &emsp; - This means you are focused about the task elements; throwing the ball or pressing the space bar when the other players are throwing.
+                    </p>
+                    <p>2) Thinking about things related to the experiment, but not about throwing and/or following the ball (e.g., characteristics of the task and/or the other players).<br>
+                        &emsp; - This means you are thinking about elements related to the game or experiment in general, but not about your actual task. Examples of this might be thinking about being bored, anxious, how much time has passed, or even thinking about what the other players are like.
+                    </p>
+                    <p>3) Thinking about things unrelated to the current task (e.g., thinking about anything not related to throwing and/or following the ball or the experiment itself).<br>
+                        &emsp; - This means you are thinking about things other than the task/experiment. It may involve planning what you have to do later, thinking about something you are concerned about, or memories from the past. Anything other than the experiment falls in this category. This is a very common experience, so don’t worry if it happens. Please be honest about your thoughts.
+                    </p>
+
+                    <button id="continue2" class="button is-fullwidth" disabled onclick="page3()">
+                        <p> Next Page </p>
+                    </button>
+                </div>
+                <div id="instrp3" class="hide mt-2">
+                    <p>For mental visualization, your ball tossing performance is not as important compared to you <b>MENTALLY VISUALIZING</b> the entire experience. Imagine what the others look like. What sort of people are they? Where are you playing? Is it warm and sunny or cold and rainy? Create in your mind a complete mental picture of what might be going on if you were playing this game in real life.</p>
+                    <button id="pre-task-button" class="button is-fullwidth" disabled>
                         <p id="pre-task-button-text"></p>
                     </button>
                 </div>
@@ -121,32 +116,21 @@
                         <div class="content">
                             <p id="probe-text"></p>
                             <form id="probe-form">
-                                <p><b>
-                                        Just before the probe, please rate the degree to which your thoughts were
-                                        off-task (completely on-task to
-                                        completely off-task).
-                                    </b></p>
-
-                                <p>
-                                    Your thoughts are off-task when:
-                                <ul>
-                                    <li>You are thinking about anything that is going on in your external environment,
-                                    </li>
-                                    <li>You are focusing on internal things, like planning, memories, or imagining
-                                        future events, or</li>
-                                    <li>You are focusing on any sensations in your body.</li>
-                                </ul>
+                                <p>What were you thinking about immediately before this screen? Indicate your answer using the keyboard (1, 2, or 3).</p>
+                                <p>1) Thinking about the <b>mental visualization task</b> (thinking about throwing and/or following the ball).<br>
+                                    &emsp; - This means you are focused about the task elements; throwing the ball or pressing the space bar when the other players are throwing.
                                 </p>
-
-                                <div id="q1" class="control box"></div>
-                                <script>likert(7, 'Completely On-Task', 'Completely Off-Task', 'q1');</script>
+                                <p>2) Thinking about things related to the experiment, but not about throwing and/or following the ball (e.g., characteristics of the task and/or the other players).<br>
+                                    &emsp; - This means you are thinking about elements related to the game or experiment in general, but not about your actual task. Examples of this might be thinking about being bored, anxious, how much time has passed, or even thinking about what the other players are like.
+                                </p>
+                                <p>3) Thinking about things unrelated to the current task (e.g., thinking about anything not related to throwing and/or following the ball or the experiment itself).<br>
+                                    &emsp; - This means you are thinking about things other than the task/experiment. It may involve planning what you have to do later, thinking about something you are concerned about, or memories from the past. Anything other than the experiment falls in this category. This is a very common experience, so don’t worry if it happens. Please be honest about your thoughts.
+                                </p>
                             </form>
                         </div>
                     </section>
                     <footer class="modal-card-foot">
-                        <button id="probe-button-0" class="button is-fullwidth" type="submit" form="probe-form">
-                            <p id="probe-button-0-text"></p>
-                        </button>
+                        <p>Enter your response using the keyboard.</p>
                     </footer>
                 </div>
             </div>
