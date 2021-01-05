@@ -123,7 +123,7 @@ function start() {
     /****************************************
      * Initialize Players
      * */
-    self.participant = new Participant();
+    self.participant = new ParticipantShape();
     self.allPlayers = [participant];
 
     const maxT = toMilliseconds(options['max-confederate-time']);
@@ -172,7 +172,7 @@ function start() {
     self.confederates = new Array(options['confederates']);
     for (let i = 0; i < confederates.length; ++i) {
         confederates[i] =
-            new Confederate(`Player ${i == 0 ? 1 : 3}`,
+            new Shape(`Player ${i == 0 ? 1 : 3}`,
                 function () {
                     setTimeout(
 
@@ -184,7 +184,8 @@ function start() {
                         (pickFromDist(range(0, timedist.length), timedist)
                             + noise() + 0.6) * 1000
                     );
-                });
+                },
+                'square');
     }
     allPlayers.push(...confederates);
 
@@ -243,8 +244,8 @@ function start() {
         console.log('throwto:', to.id);
 
         recorder.record('throw', {
-            from: from instanceof Participant ? 'participant' : from.name,
-            to: to instanceof Participant ? 'participant' : to.name,
+            from: from instanceof Participant || from instanceof ParticipantShape ? 'participant' : from.name,
+            to: to instanceof Participant || to instanceof ParticipantShape ? 'participant' : to.name,
         });
 
         // If last throw, end the game.
@@ -340,7 +341,7 @@ function tick() {
     canvas.width = document.documentElement.clientWidth;
     canvas.height = document.documentElement.clientHeight;
 
-    let scale = 0.1666 * Math.min(canvas.height, canvas.width) / participant.sh;
+    let scale = 0.10 * Math.min(canvas.height, canvas.width) / participant.sh;
     allPlayers.forEach(c => c.scale(scale));
     ball.scale(0.04 * Math.min(canvas.height, canvas.width) / ball.sh);
 
@@ -349,14 +350,15 @@ function tick() {
         confederates, 0.5 * Math.min(canvas.height, canvas.width),
         participant.cx, participant.cy
     );
-    confederates.forEach(c => c.hflip = c.dx + c.dw / 2 > canvas.width / 2);
+    // Ignore hflip for shapes.
+    // confederates.forEach(c => c.hflip = c.dx + c.dw / 2 > canvas.width / 2);
 
-    if (currentPlayer.hflip)
-        ball.hflip = true;
-    else ball.hflip = false;
+    // if (currentPlayer.hflip)
+    //     ball.hflip = true;
+    // else ball.hflip = false;
 
     ball.setPosition(
-        relpx((20 + (ball.hflip ? 150 : 0)) * scale, 48 * scale, currentPlayer)
+        relpx(54 * scale, 54 * scale, currentPlayer)
     );
 
 

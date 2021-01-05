@@ -286,6 +286,73 @@ Participant.prototype = Object.create(Player.prototype);
 
 
 /**
+* Creates a geometric shape as a player in the desocialized task.
+* @constructor
+* @extends Sprite
+* @param {String} name - A unique name for the shape.
+*/
+function Shape(name, onturn, type) {
+    Sprite.call(this, 'assets/shapes.png',
+        ['circle', 'triangle', 'square', 'pentagon', 'hexagon'], 115, 97
+    );
+
+    this.name = name;
+    this.type = type;
+    this.turn = false;
+
+    this.onturn = onturn;
+
+    globalBus.register('turn', $.proxy(function (player) {
+        if (player.id === this.id)
+            this.turn = true;
+
+        if (this.turn) {
+            this.onturn();
+        }
+    }, this));
+
+    globalBus.register('throwto', $.proxy(function (from, to) {
+        if (to.id !== this.id)
+            this.turn = false;
+
+    }, this));
+
+    globalBus.register('render', $.proxy(function () {
+        this.setSprite(this.type);
+    }, this));
+
+    this.update = function (ctx) {
+        ctx.font = '1em BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif';
+        ctx.fillStyle = 'White';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('', this.cx, this.dy + this.dh + 10);
+    };
+}
+
+Shape.prototype = Object.create(Sprite.prototype);
+
+
+/**
+* Creates the participant's player.
+* @constructor
+* @extends Player
+* @param {String} name - The name of the participant.
+*/
+function ParticipantShape() {
+    Shape.call(this, '', ()=>false, 'square');
+
+    globalBus.register('clicked', $.proxy(function (sprite) {
+        //console.log(sprite instanceof Player)
+        if (this.turn && sprite instanceof Shape && sprite.id !== this.id)
+            globalBus.emit('throwto', this, sprite);
+    }, this));
+}
+
+Participant.prototype = Object.create(Player.prototype);
+
+
+/**
 * Creates a sprite representing a ball.
 * @constructor
 * @extends Sprite
@@ -295,3 +362,17 @@ function Ball() {
 }
 
 Ball.prototype = Object.create(Sprite.prototype);
+
+
+/**
+* Create a ball for the desocialized version.
+* @constructor
+* @extends Sprite
+*/
+function Circle() {
+    Sprite.call(this, 'assets/shapes.png',
+        ['circle', 'triangle', 'square', 'pentagon', 'hexagon'], 115, 97
+    );
+}
+
+Circle.prototype = Object.create(Sprite.prototype);
