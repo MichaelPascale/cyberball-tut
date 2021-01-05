@@ -85,8 +85,8 @@ function connecting() {
     const minT = toMilliseconds(options['min-connecting-time']);
     const totaltime = DEV_MODE ? 250 : Math.random() * (maxT - minT) + minT;
 
-    setTimeout(() => { $('#connecting-text')[0].innerText = 'Waiting for 2 more participants...'; }, 750);
-    setTimeout(() => { $('#connecting-text')[0].innerText = 'Waiting for 1 more participants...'; }, 0.72 * totaltime);
+    setTimeout(() => { $('#connecting-text')[0].innerText = 'Please wait. Loading the task...'; }, 750);
+    setTimeout(() => { $('#connecting-text')[0].innerText = 'Please wait. Loading the task...'; }, 0.72 * totaltime);
     setTimeout(() => { $('#connecting-text')[0].innerText = 'Starting game.'; }, totaltime - 1000);
 
     setTimeout(function () {

@@ -23,7 +23,7 @@
     <div id="view" class="page fullscreen columns is-centered is-vcentered">
 
         <div id="instructions" class="box has-text-centered hide" style="position: fixed; bottom: 0; width: 60vw;">
-            <p>On your turn, press <u>J</u> to throw to the <i>left</i>, or press <u>K</u> to throw to the <i>right</i>.</p>
+            <p>When the circle reaches the shape at the bottom of the screen (closest to you), press <u>J</u> to move it to the <i>top left</i>, or press <u>K</u> to move it to the <i>top right</i>.</p>
         </div>
 
         <canvas id="canvas" class="hide"></canvas>
@@ -59,27 +59,27 @@
 
                 </script>
                 <div id="instrp1" class="mt-2">
-                    <p>In the upcoming experiment, we are investigating the effects of practicing <b>mental visualization</b> in game play. Thus, we need you to practice your mental visualization skills. We have found that the best way to do this is to have you play an online ball tossing game with other participants who are logged on at the same time.</p>
-                    <p>In a few moments, you will be playing a ball tossing game with other participants over our secure network. The game is very simple. <b>When the ball is tossed to you, indicate who you would like to throw the ball to using the keyboard by pressing either <u>'J'</u> (for the player to your left) or <u>'K'</u> (for the player to your right)</b>.</p>
-                    <p>These will all be labeled for you during the game.</p>
+                    <p>In the upcoming experiment, we are investigating the effects of practicing <b>mental visualization</b> in a cognitive task. Thus, we need you to practice your mental visualization skills.</p>
+                    <p>In a few moments, you will be engaged in the task. The task is very simple. A small circle will float between shapes on the screen. <b>When the circle reaches the shape at the bottom of the screen (closest to you), indicate this by moving it to another shape to the left or right. You can choose which shape to move the circle to by using the keyboard and pressing either <u>'J'</u> (for the shape on the left) or <u>'K'</u> (for the shape on the right)</b>.</p>
+                    <p>These will all be labeled for you during the task.</p>
                     <button id="continue1" class="button is-fullwidth" disabled onclick="page2()">
                         <p> Next Page </p>
                     </button>
                 </div>
                 <div id="instrp2" class="hide mt-2">
-                    <p>The game will also pause at several points to help us understand how mental visualization impacts thoughts. At this time, you and the other participants will be presented a probe question regarding your thoughts at the moment the game paused. Please answer these questions honestly. <b>They will not affect your scores or progress in any way</b>.</p>
+                    <p>The task will also pause at several points to help us understand how mental visualization impacts thoughts. At this time, you will be presented a probe question regarding your thoughts at the moment the task paused. Please answer these questions honestly. <b>They will not affect your scores or progress in any way</b>.</p>
                     <p>** Please read these instructions very carefully! **</p>
                     <p>We will ask that you report your thoughts as they were <b>immediately before the presentation of the thought probe</b>.</p>
                     <p>You will see the following question appear:</p>
                     <hr>
                     <p>What were you thinking about immediately before this screen? Indicate your answer using the keyboard (1, 2, or 3).</p>
-                    <p>1) Thinking about the <b>mental visualization task</b> (e.g., thinking about throwing and/or following the ball).<br>
-                        &emsp; - This means you are focused on the task elements; throwing the ball or following it as the other players are throwing.
+                    <p>1) Thinking about the <b>mental visualization task</b> (e.g., thinking about following the circle).<br>
+                        &emsp; - This means you are focused on the task elements and following the circle.
                     </p>
-                    <p>2) Thinking about things related to the experiment, but not about throwing and/or following the ball (e.g., characteristics of the task and/or the other players).<br>
-                        &emsp; - This means you are thinking about elements related to the game or experiment in general, but not about the specific task you have been given. Examples of this might be thinking about being bored, anxious, how much time has passed, or even thinking about what the other players are like.
+                    <p>2) Thinking about things related to the experiment, but not about following the circle (e.g., characteristics of the task).<br>
+                        &emsp; - This means you are thinking about elements related to the task or experiment in general, but not about the specific task you have been given. Examples of this might be thinking about being bored, anxious, or how much time has passed.
                     </p>
-                    <p>3) Thinking about things unrelated to the current task (e.g., thinking about anything not related to throwing and/or following the ball or the experiment itself).<br>
+                    <p>3) Thinking about things unrelated to the current task (e.g., thinking about anything not related to following the circle or the experiment itself).<br>
                         &emsp; - This means you are thinking about things other than the task/experiment. It may involve planning what you have to do later, thinking about something you are concerned about, or memories from the past. Anything other than the experiment falls in this category. This is a very common experience, so don’t worry if it happens. Please be honest about your thoughts.
                     </p>
 
@@ -88,7 +88,7 @@
                     </button>
                 </div>
                 <div id="instrp3" class="hide mt-2">
-                    <p>Your ball tossing performance is not as important compared to you <b>MENTALLY VISUALIZING</b> the entire experience. Imagine what the others look like. What sort of people are they? Where are you playing? Is it warm and sunny or cold and rainy? Create in your mind a complete mental picture of what might be going on if you were playing this game in real life.</p>
+                    <p>Your performance is not as important compared to you <b>MENTALLY VISUALIZING</b> the entire experience. Imagine the other shapes and the environment they are in, as well as how the circle moves among the shapes.</p>
                     <button id="pre-task-button" class="button is-fullwidth" disabled>
                         <p id="pre-task-button-text"></p>
                     </button>
@@ -115,11 +115,11 @@
                             <p id="probe-text"></p>
                             <form id="probe-form">
                                 <p>What were you thinking about immediately before this screen? Indicate your answer using the keyboard (1, 2, or 3).</p>
-                                <p>1) Thinking about the <b>mental visualization task</b> (thinking about throwing and/or following the ball).
+                                <p>1) Thinking about the <b>mental visualization task</b> (e.g., thinking about following the circle).
                                 </p>
-                                <p>2) Thinking about things <b>related to the experiment, but not about throwing and/or following the ball</b> (e.g., characteristics of the task and/or the other players).
+                                <p>2) Thinking about things <b>related to the experiment, but not about following the circle</b> (e.g., characteristics of the task).
                                 </p>
-                                <p>3) Thinking about things <b>unrelated to the current task</b> (e.g., thinking about anything not related to throwing and/or following the ball or the experiment itself).
+                                <p>3) Thinking about things <b>unrelated to the current task</b> (e.g., thinking about anything not related or following the circle or the experiment itself).
                                 </p>
                             </form>
                         </div>
