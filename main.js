@@ -287,7 +287,7 @@ function start() {
             switch (e.key) {
             case '1':
             case '2':
-            case '3':
+            //case '3':
                 recorder.record('key', { bt: e.key });
                 recorder.record('probe', { q1: e.key });
                 recorder.record('closeprobe', { });
