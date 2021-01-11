@@ -229,8 +229,8 @@ function start() {
             if (self.tosses >= options['tosses']) {
                 end();
             }
-            else setTimeout(checkdone, 1000);
-        }, 1000);
+            else setTimeout(checkdone, 200);
+        }, 200);
     };
 
     // Register event listeners.
