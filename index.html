@@ -28,11 +28,9 @@
 
         <canvas id="canvas" class="hide"></canvas>
 
-        <div id="pre-task-page" class="container box">
-            <div class="content">
+        <div id="pre-task-page" class="popup container box">
+            <div class="content expand  is-flex is-flex-direction-column">
                 <h1 id="pre-task-title"></h1>
-                <div class="has-text-centered mb-5"><b>Important
-                        Instructions:</b></div>
                 <script>
                     setTimeout(function () {
                         $('#continue1').prop('disabled', false);
@@ -40,8 +38,9 @@
                     }, 8000);
 
                     function page2() {
-                        $('#instrp1').hide();
-                        $('#instrp2').show();
+                        $('#instrp1').css('display', 'none');
+                        $('#instrp2').css('display', 'flex');
+                        $('#instrp2').addClass('is-flex-direction-column is-flex-grow-5');
                         setTimeout(function () {
                             $('#continue2').prop('disabled', false);
                             $('#continue2').addClass('is-primary');
@@ -49,8 +48,17 @@
                     }
 
                     function page3() {
-                        $('#instrp2').hide();
-                        $('#instrp3').show();
+                        $('#instrp2').css('display', 'none');
+                        $('#instrp3').css('display', 'flex');
+                        setTimeout(function () {
+                            $('#continue3').prop('disabled', false);
+                            $('#continue3').addClass('is-primary');
+                        }, 8000);
+                    }
+
+                    function page4() {
+                        $('#instrp3').css('display', 'none');
+                        $('#instrp4').css('display', 'flex');
                         setTimeout(function () {
                             $('#pre-task-button').prop('disabled', false);
                             $('#pre-task-button').addClass('is-primary');
@@ -58,46 +66,61 @@
                     }
 
                 </script>
-                <div id="instrp1" class="mt-2">
+                <div id="instrp1" style="display: flex;" class="mt-2 scroll is-flex-direction-column is-flex-grow-5">
                     <p>In the upcoming experiment, we are investigating the effects of practicing <b>mental visualization</b> in a cognitive task. Thus, we need you to practice your mental visualization skills.</p>
                     <p>In a few moments, you will be engaged in the task. The task is very simple. A small circle will float between shapes on the screen. <b>When the circle reaches the shape at the bottom of the screen (closest to you), indicate this by moving it to another shape to the left or right. You can choose which shape to move the circle to by using the keyboard and pressing either <u>'J'</u> (for the shape on the left) or <u>'K'</u> (for the shape on the right)</b>.</p>
                     <p>These will all be labeled for you during the task.</p>
-                    <button id="continue1" class="button is-fullwidth" disabled onclick="page2()">
+                    <div class="is-flex-grow-5"></div>
+                    <button id="continue1" class="is-align-self-flex-end button is-fullwidth" disabled onclick="page2()">
                         <p> Next Page </p>
                     </button>
                 </div>
-                <div id="instrp2" class="hide mt-2">
+                <div id="instrp2" class="hide mt-2 scroll is-flex-direction-column is-flex-grow-5">
                     <p>The task will also pause at several points to help us understand how mental visualization impacts thoughts. At this time, you will be presented a probe question regarding your thoughts at the moment the task paused. Please answer these questions honestly. <b>They will not affect your scores or progress in any way</b>.</p>
-                    <p>** Please read these instructions very carefully! **</p>
                     <p>We will ask that you report your thoughts as they were <b>immediately before the presentation of the thought probe</b>.</p>
-                    <p>You will see the following question appear:</p>
-                    <hr>
-                    <p>
-                        <b>Please rate whether your thoughts just before this message were <i>on-task</i> (1) or <i>off-task</i> (2).</b>
-                        Indicate your answer using the keyboard (1 or 2).
-                    </p>
-
-                    <p>
-                        Your thoughts are off-task when:
-                    <ul>
-                        <li>You are thinking about anything that is going on in your external environment,
-                        </li>
-                        <li>You are focusing on internal things, like planning, memories, or imagining
-                            future events, or</li>
-                        <li>You are focusing on any sensations in your body.</li>
-                    </ul>
-                    </p>
-
-                    <p>
-                        Please be honest, <b>your response will not affect your progress</b> in any way.
-                    </p>
-
+                    <div class="is-flex-grow-5"></div>
                     <button id="continue2" class="button is-fullwidth" disabled onclick="page3()">
                         <p> Next Page </p>
                     </button>
                 </div>
-                <div id="instrp3" class="hide mt-2">
+                <div id="instrp3" class="hide mt-2 scroll is-flex-direction-column is-flex-grow-5">
+                    <p>At each prompt, you will see the following question appear:</p>
+                    <hr>
+                    <p>
+                        <b>Was your mind moving about freely?</b>
+                    </p>
+
+                    <p>
+                        Your thoughts move freely when:
+                    <ul>
+                        <li>They seem to wander around, flowing from one thing to another
+                        </li>
+                        <li>There is no overarching purpose or direction to your thinking. Although there may still be some connection between one thought and the next
+                        </li>
+                        <li>Images and memories seem to spontaneously come into your mind
+                        </li>
+                        <li>Your attention lands spontaneously on things in your environment
+                        </li>
+                        <li>Your mind may spontaneously drift between things in the external environment and internal images so it may go back and forth
+                        </li>
+                        <li>Your thoughts move freely when it feels like your thoughts could land on pretty much anything, or
+                        </li>
+                        <li>Your thoughts seem to flow with ease
+                        </li>
+                    </ul>
+                    </p>
+
+                    <hr>
+                    <p>You will then be able to respond to this prompt on a scale from 1 (Not at all) to  7 (Very much so). The game will resume when you are done.</p>
+                    <div class="is-flex-grow-5"></div>
+                    <button id="continue3" class="button is-fullwidth" disabled onclick="page4()">
+                        <p> Next Page </p>
+                    </button>
+                </div>
+
+                <div id="instrp4" class="hide mt-2 scroll is-flex-direction-column is-flex-grow-5">
                     <p>Your performance is not as important compared to you <b>MENTALLY VISUALIZING</b> the entire experience. Imagine the other shapes and the environment they are in, as well as how the circle moves among the shapes.</p>
+                    <div class="is-flex-grow-5"></div>
                     <button id="pre-task-button" class="button is-fullwidth" disabled>
                         <p id="pre-task-button-text"></p>
                     </button>
@@ -115,7 +138,7 @@
         <div id="probe-dialogue" class="modal">
             <div class="modal-background"></div>
             <div class="expand columns is-vcentered">
-                <div class="modal-card">
+                <div class="popup modal-card">
                     <header class="modal-card-head">
                         <p id="probe-title" class="modal-card-title"></p>
                     </header>
@@ -123,31 +146,42 @@
                         <div class="content">
                             <p id="probe-text"></p>
                             <form id="probe-form">
-                                <p>
-                                    <b>Please rate whether your thoughts just before this message were <u>on-task</u> (1) or <u>off-task</u> (2).</b>
-                                    Indicate your answer using the keyboard (1 or 2).
+                                <p class="is-size-4">
+                                    <b>Was your mind moving about freely?</b>
                                 </p>
 
-
                                 <p>
-                                    Your thoughts are off-task when:
+                                    Your thoughts move freely when:
                                 <ul>
-                                    <li>You are thinking about anything that is going on in your external environment,
+                                    <li>They seem to wander around, flowing from one thing to another
                                     </li>
-                                    <li>You are focusing on internal things, like planning, memories, or imagining
-                                        future events, or</li>
-                                    <li>You are focusing on any sensations in your body.</li>
+                                    <li>There is no overarching purpose or direction to your thinking. Although there may still be some connection between one thought and the next
+                                    </li>
+                                    <li>Images and memories seem to spontaneously come into your mind
+                                    </li>
+                                    <li>Your attention lands spontaneously on things in your environment
+                                    </li>
+                                    <li>Your mind may spontaneously drift between things in the external environment and internal images so it may go back and forth
+                                    </li>
+                                    <li>Your thoughts move freely when it feels like your thoughts could land on pretty much anything, or
+                                    </li>
+                                    <li>Your thoughts seem to flow with ease
+                                    </li>
                                 </ul>
                                 </p>
 
                                 <p>
                                     Please be honest, <b>your response will not affect your progress</b> in any way.
                                 </p>
+                                <div id="q1" class="control box"></div>
+                                <script>likert(7, 'Not at all', 'Very much so', 'q1');</script>
                             </form>
                         </div>
                     </section>
                     <footer class="modal-card-foot">
-                        <p>Enter your response using the keyboard.</p>
+                        <button id="probe-button-0" class="button is-fullwidth" type="submit" form="probe-form">
+                            <p id="probe-button-0-text"></p>
+                        </button>
                     </footer>
                 </div>
             </div>
