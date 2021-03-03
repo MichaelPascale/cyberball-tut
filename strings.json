@@ -1,5 +1,5 @@
 {
-    "pre-task-title": "Mental Visualization",
+    "pre-task-title": "Mental Visualization - Instructions",
     "pre-task-messages": [
     	"<div class=\"has-text-centered\"><b>Important Instructions:</b></div>",
         "In the upcoming experiment, we test the effects of practicing mental visualization on task performance. Thus, we need you to practice your <b>mental visualization skills</b>. We have found that the best way to do this is to have you play an online ball tossing game with other participants who are logged on at the same time.",
@@ -14,7 +14,7 @@
     "directions-text": "You have the ball. Click on the player you would like to throw it too.",
     "probe-title": "Thought Probe",
     "probe-text": "",
-    "probe-button-0-text": "Continue",
+    "probe-button-0-text": "Submit Response and Continue",
     "end-title": "The task has ended.",
     "end-text": "Click the button below to return to Qualtrics and complete several followup questions.",
     "survey-button-text": "Return to Qualtrics"

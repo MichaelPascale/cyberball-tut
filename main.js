@@ -58,7 +58,7 @@ function init() {
     $('#connecting-text')[0].innerText = strings['connecting-text'];
     $('#probe-title')[0].innerText = strings['probe-title'];
     // $('#probe-text')[0].innerText = strings['probe-text'];
-    // $('#probe-button-0-text')[0].innerText = strings['probe-button-0-text'];
+    $('#probe-button-0-text')[0].innerText = strings['probe-button-0-text'];
     $('#end-title')[0].innerText = strings['end-title'];
     $('#end-text')[0].innerText = strings['end-text'];
     $('#survey-button-text')[0].innerText = strings['survey-button-text'];
@@ -284,20 +284,7 @@ function start() {
 
         } else if (self.mode === 'probe') {
             switch (e.key) {
-            case '1':
-            case '2':
-            //case '3':
-                recorder.record('key', { bt: e.key });
-                recorder.record('probe', { q1: e.key });
-                recorder.record('closeprobe', { });
-                $('#probe-dialogue').hide();
-                self.mode = 'game';
-                self.halted = false;
-                setprobe();
-
-                setTimeout(tick, 16);
-                break;
-
+            // Do nothing, we're not using a keyboard response for this version.
             default:
             }
         }
@@ -307,6 +294,24 @@ function start() {
 
     document.addEventListener('keydown', keypress);
 
+    // Set up a listener for the probe form.
+    $('#probe-form').submit(function (e) {
+        $('#probe-dialogue').hide();
+
+
+        const formdata = $('#probe-form').serializeArray();
+        recorder.record('probe', {q1: formdata[0].value});
+        $('#probe-form')[0].reset();
+
+        recorder.record('closeprobe', { });
+        self.mode = 'game';
+        self.halted = false;
+        setprobe();
+
+        setTimeout(tick, 16);
+
+        e.preventDefault();
+    });
 
 
     $('#return-to-survey')[0].addEventListener('mousedown', function () {

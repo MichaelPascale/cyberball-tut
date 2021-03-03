@@ -24,6 +24,15 @@
   width: 100%;
 }
 
+.popup {
+  height: 90%;
+  width: 90%;
+}
+
+.scroll {
+  overflow-y: auto;
+}
+
 .hide {
   display: none;
 }
