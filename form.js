@@ -15,9 +15,13 @@
 function likert (n, low, high, node) {
     for (let i = 1; i <= n; ++i)
         $(
-            `<label class="radio">
-             <input type="radio" name="${node}" value=${i} required>
-             (${i}) ${i == 1 ? low : i == n ? high : ''}
-             </label><br />`
+            (i == 1 ? `<span class="mt-auto mr-2">${low}</span>` : '') +
+            `
+             <label class="radio likert-item has-text-centered">
+             ${i}
+             <input type="radio" class="my-1 mx-1" name="${node}" value=${i} required>
+             </label>
+            `
+            + (i == n ? `<span class="mt-auto ml-2">${high}</span>` : '')
         ).appendTo(`#${node}`);
 }

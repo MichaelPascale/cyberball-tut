@@ -51,6 +51,16 @@
   align-items: center;
 }
 
+.likert-item {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+}
+
+.mt-auto {
+  margin-top: auto;
+}
+
 #loading-page {
   width: 40em;
 }
