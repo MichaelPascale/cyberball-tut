@@ -60,6 +60,15 @@
                         $('#instrp3').css('display', 'none');
                         $('#instrp4').css('display', 'flex');
                         setTimeout(function () {
+                            $('#continue4').prop('disabled', false);
+                            $('#continue4').addClass('is-primary');
+                        }, 8000);
+                    }
+
+                    function page5() {
+                        $('#instrp4').css('display', 'none');
+                        $('#instrp5').css('display', 'flex');
+                        setTimeout(function () {
                             $('#pre-task-button').prop('disabled', false);
                             $('#pre-task-button').addClass('is-primary');
                         }, 8000);
@@ -111,13 +120,30 @@
                     </p>
 
                     <hr>
-                    <p>You will then be able to respond to this prompt on a scale from 1 (Not at all) to  7 (Very much so). The game will resume when you are done.</p>
+                    <p>You will then be able to respond to this prompt on a scale from 1 (Not at all) to  7 (Very much so).</p>
                     <div class="is-flex-grow-5"></div>
                     <button id="continue3" class="button is-fullwidth" disabled onclick="page4()">
                         <p> Next Page </p>
                     </button>
                 </div>
                 <div id="instrp4" class="hide mt-2 scroll is-flex-direction-column is-flex-grow-5">
+                    <p>You will be interrupted several times during the task with the prompt "Was your mind moving about freely?". The definition you just read will be available to you when you respond. After your response, the task will resume.</p>
+                    <p>As per the definition, moving freely means that your thoughts are not constrained by anything, and are moving without being pulled to any specific topic.</p>
+                    <p>
+                        Some examples of thoughts moving freely:
+                    <ul>
+                        <li>You imagine yourself having dinner this evening, wonder if you've been eating too much fast food recently, notice a smudge on the computer screen, and then remember that you have to clean the bathroom when you get home.
+                        </li>
+                        <li>You think about a project you have due, then recall a coworker's birthday is next week and have a thought regarding the character in a book you received as a gift.
+                        </li>
+                    </ul>
+                    </p>
+                    <div class="is-flex-grow-5"></div>
+                    <button id="continue4" class="button is-fullwidth" disabled onclick="page5()">
+                        <p> Next Page </p>
+                    </button>
+                </div>
+                <div id="instrp5" class="hide mt-2 scroll is-flex-direction-column is-flex-grow-5">
                     <p>Your ball tossing performance is not as important compared to you <b>MENTALLY VISUALIZING</b> the entire experience. Imagine what the others look like. What sort of people are they? Where are you playing? Is it warm and sunny or cold and rainy? Create in your mind a complete mental picture of what might be going on if you were playing this game in real life.</p>
                     <div class="is-flex-grow-5"></div>
                     <button id="pre-task-button" class="button is-fullwidth" disabled>
@@ -167,18 +193,32 @@
                                     <li>Your thoughts seem to flow with ease
                                     </li>
                                 </ul>
+                                    <a id="open-examples" class="is-size-7 mt-0" onclick="$('#fmt-examples').show(); $('#open-examples').hide();">Click here to show examples.</a>
+                                    <div id="fmt-examples" class="hide">
+                                        Some examples of thoughts moving freely:
+                                        <ul>
+                                            <li>You imagine yourself having dinner this evening, wonder if you've been eating too much fast food recently, notice a smudge on the computer screen, and then remember that you have to clean the bathroom when you get home.
+                                            </li>
+                                            <li>You think about a project you have due, then recall a coworker's birthday is next week and have a thought regarding the character in a book you received as a gift.
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </p>
+
 
                                 <p>
                                     Please be honest, <b>your response will not affect your progress</b> in any way.
                                 </p>
-                                <div id="q1" class="control box"></div>
-                                <script>likert(7, 'Not at all', 'Very much so', 'q1');</script>
+                                <div class="box">
+                                    <b>Was your mind moving about freely?</b>
+                                    <div id="q1" class="control mt-3 is-flex"></div>
+                                    <script>likert(7, 'Not at all', 'Very much so', 'q1');</script>
+                                </div>
                             </form>
                         </div>
                     </section>
                     <footer class="modal-card-foot">
-                        <button id="probe-button-0" class="button is-fullwidth" type="submit" form="probe-form">
+                        <button id="probe-button-0" class="button is-fullwidth" type="submit" form="probe-form" onclick="$('#fmt-examples').hide(); $('#open-examples').show();">
                             <p id="probe-button-0-text"></p>
                         </button>
                     </footer>
