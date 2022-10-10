@@ -18,8 +18,6 @@ Upon completion of the task, a `POST` request containing JSON data is sent to th
 
 Build with [Babel](https://babeljs.io/) for support of potentially outdated participants' browsers.
 
-This implementation of Cyberball uses the _overall_ probability of each player recieving the ball. Because the probability of a throw to each player is dependent on the last throw, the system is a [Markov process](https://en.wikipedia.org/wiki/Markov_chain). The input constants are binomials of the probabilities of independent throws from each player and so they will not be equal to the probability to be achieved. For example, if the participant is to recieve the ball at an overall rate of `0.15` in a 3 player game, the independent probability of any throw going to the participant must be `0.1765` and the parameter to the game will be `0.0968`.
-
 ---
 
 Copyright &copy; 2020, Michael Pascale. [MIT Licensed](https://mit-license.org/).
